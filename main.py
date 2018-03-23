@@ -31,8 +31,8 @@ print("Reading rows")
 
 for row in range(2, sheet.max_row + 1):
     if (sheet['B' + str(row)].value == None and
-                sheet['A' + str(row)].font.i == False and
-                sheet['A' + str(row)].fill.start_color.index == 'FFF2F2F2' or '00000000'):
+        sheet['A' + str(row)].font.i == False and
+        sheet['A' + str(row)].fill.start_color.index == 'FFF2F2F2' or '00000000'):
         lookfor = sheet['A' + str(row)].value
         # print(lookfor)
         # for root, dirs, files in chain.from_iterable(os.walk(path)for path in search_dir):

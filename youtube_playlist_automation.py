@@ -44,9 +44,9 @@ if __name__ == '__main__':
         first_video = browser.find_element_by_id("video-title")
         # print(first_video.get_attribute('href'))
         fv_link = first_video.get_attribute('href')
-        cur.execute("""INSERT INTO playlist_youtube(youtube_link)
-                        VALUES(?)
-                        WHERE song_id=?""", (fv_link, i))
+        cur.execute("""INSERT INTO playlist_youtube(song_id, youtube_link)
+                        VALUES(?, ?)
+                        """, (i, fv_link))
         # first_video.click()
         i+=1
         browser.close()

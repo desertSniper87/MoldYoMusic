@@ -37,7 +37,8 @@ for row in range(2, sheet.max_row + 1):
         # print(lookfor)
         # for root, dirs, files in chain.from_iterable(os.walk(path)for path in search_dir):
         # for root, dirs, files in os.walk('O:\Mobile Music Backup\\'):
-        for root, dirs, files in chain.from_iterable(os.walk(path) for path in ('H:\\', 'O:\My Songs\Metal')):
+        for root, dirs, files in chain.from_iterable(os.walk(path)\
+                                 for path in ('H:\\', 'O:\My Songs\Metal')):
         # for root, dirs, files in os.walk('O:\Mobile Music Backup\\'):
             for name in files:
                 file = name
@@ -66,7 +67,8 @@ for row in range(2, sheet.max_row + 1):
                         # print("Artist Name: ", )
                         artist_name = None
                         try :
-                            artist_name = eyed3.load(os.path.join(root, file)).tag.artist
+                            artist_name =\
+                            eyed3.load(os.path.join(root, file)).tag.artist
                             # print (artist_name)
                         except AttributeError:
                             pass

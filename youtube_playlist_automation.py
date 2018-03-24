@@ -22,8 +22,17 @@ if __name__ == '__main__':
 
     cur.execute("SELECT COUNT(*) FROM playlist_youtube ")
     n = cur.fetchone()[0]
-    i = 11
+    i = 906
     while(i<n):
+        print(i)
+        cur.execute("""SELECT youtube_link FROM playlist_youtube 
+                        WHERE song_id=?""", (i, ))
+
+        if cur.fetchone()[0] is not None:
+            print("Playlist link already exists for Song")
+            i+=1
+            continue
+        
         cur.execute("""SELECT song_name FROM playlist WHERE song_id=?""", (i, ))
         # print(cur.fetchone())
 
@@ -43,9 +52,10 @@ if __name__ == '__main__':
 
         # print(first_video.get_attribute('href'))
         fv_link = first_video.get_attribute('href')
-        cur.execute("""INSERT OR REPLACE INTO playlist_youtube(song_id, youtube_link)
-                        VALUES(?, ?)
-                        """, (i, fv_link))
+        # cur.execute("""INSERT INTO playlist_youtube(song_id, youtube_link)
+                        # VALUES(?, ?)
+                        # """, (i, fv_link))
+        cur.execute("""UPDATE playlist_youtube SET youtube_link=? WHERE song_id=?""", (fv_link, i))
         # first_video.click()
 
         cur.execute("""SELECT playlist.song_name, youtube_link FROM playlist_youtube

@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     cur.execute("SELECT COUNT(*) FROM playlist_youtube ")
     n = cur.fetchone()[0]
-    i = 1
+    i = 11
     while(i<n):
         cur.execute("""SELECT song_name FROM playlist WHERE song_id=?""", (i, ))
         # print(cur.fetchone())
@@ -35,22 +35,28 @@ if __name__ == '__main__':
                 "https://www.youtube.com/results?search_query="\
                 + cur.fetchone()[0])
 
+
+        try:
+            first_video = browser.find_element_by_id("video-title")
+        except selenium.common.exceptions.NoSuchElementException:
+            first_video = browser.find_element_by_class("yt-uix-tile-link")
+
+        # print(first_video.get_attribute('href'))
+        fv_link = first_video.get_attribute('href')
+        cur.execute("""INSERT OR REPLACE INTO playlist_youtube(song_id, youtube_link)
+                        VALUES(?, ?)
+                        """, (i, fv_link))
+        # first_video.click()
+
         cur.execute("""SELECT playlist.song_name, youtube_link FROM playlist_youtube
                         JOIN playlist 
                         ON playlist_youtube.song_id=playlist.song_id
                         WHERE playlist_youtube.song_id=?""", (i, ))
-        print(cur.fetchone())
 
-        first_video = browser.find_element_by_id("video-title")
-        # print(first_video.get_attribute('href'))
-        fv_link = first_video.get_attribute('href')
-        cur.execute("""INSERT INTO playlist_youtube(song_id, youtube_link)
-                        VALUES(?, ?)
-                        """, (i, fv_link))
-        # first_video.click()
+        conn.commit()
+        print(cur.fetchone())
         i+=1
         browser.close()
 
-    conn.commit()
     conn.close()
 
